@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!-- If latest_question_list is defined, we have instances of the Question model -->
+{% if latest_question_list %}
+    <!-- enclose all printed question text values in an unordered list -->
+    <ul>
+        <!-- for each question (q) in latest_question_list... -->
+        {% for q in latest_question_list %}
+            <!-- ...display the text of the question in the list -->
+            <li>
+                <!--
+                Double nested curly braces are used for injecting Jinja variables into HTML fields.
+                Here we are calling the built-in id property on the Question instances named q,
+                where id is created on instantiation for each Question model and starts at 1. -->
+                <a href="/polls/{{q.id}}">
+                    <!-- print the current Question model instance's text value -->
+                    <b>{{q.question_text}}</b>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<!-- If latest_question_list is undefined, we have no instances of the Question model -->
+{% else %}
+    <p>You don't have any questions. Please add some.</p>
+{% endif %}
+
+</body>
+</html>
