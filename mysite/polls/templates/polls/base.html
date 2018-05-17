@@ -6,9 +6,8 @@
 </head>
 <body>
 
-<hr>
-<p>Header</p>
-<hr>
+<!-- include HTML from other file (visible on every route that uses this HTML template base, base.html) -->
+{% include "polls/header.html" %}
 <!--
 Every html file in polls/templates/polls that imported base.html and has
 the blocks main_content around it will use this file as a template base -->

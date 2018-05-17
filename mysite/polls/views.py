@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
-from django.http import HttpResponse
-
-from .models import Question
+from .models import Question, Choice
 
 # Create your views here.
 
@@ -30,12 +30,42 @@ def detail(request, question_id):
     # the 404 error and returns it
 
     # pk is the primary key, which by default is set to the id assigned for each instance of a unique Model
-    question = get_object_or_404(Question, pk = question_id)
+    question = get_object_or_404(Question, pk=question_id)
     return render(request, 'polls/detail.html', {'question': question})
 
+
 def results(request, question_id):
-    return HttpResponse("These are the results of the question: %s" % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, 'polls/results.html', {'question': question})
 
 
 def vote(request, question_id):
-    return HttpResponse("Vote on question: %s" % question_id)
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        # Seeks out a form POST request that was made to the votes view with an element of 'name'
+        # "choice". It then pulls the 'id' off the element and sets that to 'pk'.
+        # i.e. the input radio has name="choice" and id="{{choice.id}}", so pk="{{choice_id}}"
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+
+    # KeyError is brought up if the 'key' requested in POST is not in the form, and Choice.DoesNotExist
+    # is brought up if the 'id' that the 'key' links to does not exist as a Choice model instance id (>=1)
+    except (KeyError, Choice.DoesNotExist):
+        # If there is an error with requesting from the form POST request (i.e. user does not select
+        # a radio button before clicking submit), then display an error message and let the user
+        # select a new option
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "Please select a choice",
+        })
+    else:
+        # if the try works...
+        selected_choice.votes += 1      # increment the votes for the current choice
+        selected_choice.save()          # save the modified Choice model instance to the database
+
+        # The reverse() function finds the route to redirect to by searching for the namespace (i.e. 'polls'),
+        # going to the namespaces' urls.py, and then finding the url with the name of the view (i.e. 'results').
+        # Once it finds the name, it looks at the route associated with the 'namespace:view', makes sure that
+        # any parameters are fulfilled in the reverse() call (i.e. question.id) and then inserts the parameters
+        # (if any) into the route. The reverse() function then returns the full route for HttpResponseRedirect to
+        # redirect the user to.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))

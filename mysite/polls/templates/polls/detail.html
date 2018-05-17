@@ -4,13 +4,31 @@
 <!-- content block begins -->
 {% block main_content %}
 
-<h1> {{question.question_text}} </h1>
+<h1> {{ question.question_text }} </h1>
 
-<ul>
+<!-- if there is an error message -->
+{% if error_message %} <p><strong> {{ error_message }} </strong></p> {% endif %}
+
+<!-- form action tells the page to route to /polls/<int:question_id>/vote/ after the submit button is pressed -->
+<form action = "{% url 'polls:vote' question.id %}" method="post">
+    <!-- before any POST form, we MUST pass in a CSRF token-->
+    {% csrf_token %}
     {% for choice in question.choice_set.all %}
-        <li>{{choice.choice_text}}</li>
+        <!-- radio button
+             ------------
+             The 'value' tag is the id of the currently selected Question model instance. When the form is submitted,
+             the POST data is shown as "name=value" (e.g. choice=1 ; in this example the first choice is selected).
+             The 'id' tag is used as a way to uniquely identify the input tags from each other on the DOM. -->
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        <!-- label field
+             -----------
+             The 'for' tag is similar to the 'id' tag in the radio button as it is used to identify each label as a
+             unique entity. -->
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
     {% endfor %}
-</ul>
+    <!-- submit button -->
+    <input type="submit" value="Vote" />
+</form>
 
 <!-- content block ends -->
 {% endblock %}
