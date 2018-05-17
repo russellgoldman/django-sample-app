@@ -1,0 +1,16 @@
+<!-- import template to inject content block into -->
+{% extends 'polls/base.html' %}
+
+<!-- content block begins -->
+{% block main_content %}
+
+<h1> {{question.question_text}} </h1>
+
+<ul>
+    {% for choice in question.choice_set.all %}
+        <li>{{choice.choice_text}}</li>
+    {% endfor %}
+</ul>
+
+<!-- content block ends -->
+{% endblock %}

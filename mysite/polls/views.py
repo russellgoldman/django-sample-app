@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from django.http import HttpResponse
 
@@ -26,9 +26,12 @@ def index(request):
 
 # whatever value is in <int:question_id> in the route will be the value stored in question_id below
 def detail(request, question_id):
-    # rendering text with a parameter
-    return HttpResponse("This is the detail view of the question: %s" % question_id)
+    # get_object_or_404 tries first to query the instances off a Model, but if it fails then it catches
+    # the 404 error and returns it
 
+    # pk is the primary key, which by default is set to the id assigned for each instance of a unique Model
+    question = get_object_or_404(Question, pk = question_id)
+    return render(request, 'polls/detail.html', {'question': question})
 
 def results(request, question_id):
     return HttpResponse("These are the results of the question: %s" % question_id)

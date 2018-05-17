@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<hr>
+<p>Header</p>
+<hr>
+<!--
+Every html file in polls/templates/polls that imported base.html and has
+the blocks main_content around it will use this file as a template base -->
+{% block main_content %}
+<!-- end of HTML block -->
+{% endblock %}
+
+<!-- include HTML from other file (visible on every route that uses this HTML template base, base.html) -->
+{% include "polls/footer.html" %}
+
+</body>
+</html>
