@@ -1,22 +1,36 @@
+<!-- imports every file in the polls/static/polls directory (e.g. .css, .js, etc) -->
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <!-- Bootstrap imports -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
+    <!-- whenever you are referencing a static file in HTML, you need to include 'static' before the filepath -->
+    <!--<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">-->
+    <!-- link to Bootstrap css files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/bootstrap-4.1.1-dist/css/bootstrap.min.css' %}">
 </head>
 <body>
 
-<!-- include HTML from other file (visible on every route that uses this HTML template base, base.html) -->
+<!-- insert bootstrap html -->
 {% include "polls/header.html" %}
-<!--
-Every html file in polls/templates/polls that imported base.html and has
-the blocks main_content around it will use this file as a template base -->
-{% block main_content %}
-<!-- end of HTML block -->
-{% endblock %}
+<div class="jumbotron">
+    <div class="container">
+        <!--
+        Every html file in polls/templates/polls that imported base.html and has
+        the blocks main_content around it will use this file as a template base -->
+        {% block main_content %}
+        <!-- end of HTML block -->
+        {% endblock %}
 
-<!-- include HTML from other file (visible on every route that uses this HTML template base, base.html) -->
-{% include "polls/footer.html" %}
+        <!-- include HTML from other file (visible on every route that uses this HTML template base, base.html) -->
+        {% include "polls/footer.html" %}
+    </div>
+</div>
 
 </body>
 </html>

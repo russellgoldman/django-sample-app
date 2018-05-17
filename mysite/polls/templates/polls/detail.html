@@ -27,8 +27,10 @@
         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
     {% endfor %}
     <!-- submit button -->
-    <input type="submit" value="Vote" />
+    <input type="submit" class="btn btn-success" value="Vote" />
 </form>
+
+<a href="{% url 'polls:index' %}"> <- Back to Question List</a>
 
 <!-- content block ends -->
 {% endblock %}

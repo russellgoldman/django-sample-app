@@ -1,0 +1,12 @@
+li a {
+    font-size: 20px;
+    color: red;
+}
+
+body {
+    /* all elements on the website will be white since they are children elements of body
+       and it will override their colour properties */
+    color: white;
+    /* no-repeat is needed otherwise the image will be repeated to fill the screen */
+    background: white url("images/background.jpg") no-repeat;
+}
